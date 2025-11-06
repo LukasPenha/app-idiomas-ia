@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App de Idiomas IA</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ----- 1. Tela Inicial (Home) ----- -->
+    <section id="home-screen" class="screen active">
+        <div class="screen-content">
+            <h1>Escolha seu idioma</h1>
+            <div class="lang-selection">
+                <div class="lang-card" data-lang="en">
+                    <div class="flag">🇬🇧</div>
+                    <h2>English</h2>
+                </div>
+                <div class="lang-card" data-lang="it">
+                    <div class="flag">🇮🇹</div>
+                    <h2>Italiano</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ----- 2. Tela de Tópicos ----- -->
+    <section id="topics-screen" class="screen">
+        <header class="screen-header">
+            <div class="screen-content-header">
+                <button class="back-btn" data-target="home-screen">&larr;</button>
+                <h1>Tópicos</h1>
+            </div>
+        </header>
+        <div class="screen-content">
+            <div class="custom-prompt-container">
+                <p>Ou digite o que você quer estudar:</p>
+                <input type="text" id="custom-topic-input" placeholder="Ex: 'Diferença entre Simple Past e Present Perfect'">
+                <button id="custom-topic-btn">Gerar Aula</button>
+            </div>
+            
+            <div class="filter-controls">
+                <p>Ou escolha um tópico sugerido:</p>
+                <input type="search" id="topic-search" placeholder="Buscar tópicos...">
+            </div>
+            
+            <div id="topic-list-container" class="topic-list">
+                <!-- Tópicos serão inseridos pelo JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ----- 3. Tela de Estudo ----- -->
+    <section id="study-screen" class="screen">
+        <header class="screen-header">
+            <div class="screen-content-header">
+                <button class="back-btn" data-target="topics-screen">&larr;</button>
+                <h1 id="study-topic-title">Nome do Tópico</h1>
+            </div>
+        </header>
+        <div class="screen-content">
+            <div id="study-content-wrapper">
+                <!-- Conteúdo da API será inserido aqui -->
+            </div>
+        </div>
+        <div class="study-cta-footer">
+            <button id="go-to-quiz-btn">Ir para as Perguntas</button>
+        </div>
+    </section>
+
+    <!-- ----- 4. Tela de Configuração do Quiz ----- -->
+    <section id="quiz-config-screen" class="screen">
+        <header class="screen-header">
+            <div class="screen-content-header">
+                <button class="back-btn" data-target="study-screen">&larr;</button>
+                <h1>Configurar Quiz</h1>
+            </div>
+        </header>
+        <div class="screen-content">
+            <div class="config-content">
+                <p>Número de Questões:</p>
+                <div class="slider-container">
+                    <input type="range" id="question-slider" min="5" max="30" value="5">
+                    <span id="question-count">5</span>
+                </div>
+                <button id="start-quiz-btn">Iniciar Quiz</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ----- 5. Tela do Quiz ----- -->
+    <section id="quiz-screen" class="screen">
+        <div class="screen-content">
+            <div id="quiz-container">
+                <div id="quiz-header">
+                    <span id="quiz-progress">Pergunta 1 / 10</span>
+                    <button id="quit-quiz-btn" data-target="topics-screen">Sair</button>
+                </div>
+                <div id="question-container">
+                    <h2 id="question-text">Enunciado da pergunta...</h2>
+                    <div id="options-container">
+                        <!-- Opções serão inseridas pelo JavaScript -->
+                    </div>
+                </div>
+                <button id="next-question-btn">Próxima</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ----- 6. Tela de Resultados ----- -->
+    <section id="results-screen" class="screen">
+        <header class="screen-header">
+            <div class="screen-content-header">
+                <h1>Resultado</h1>
+            </div>
+        </header>
+        <div class="screen-content">
+            <div id="results-summary">
+                <h2>Seu placar:</h2>
+                <p id="score-text">Acertos: 8 / 10 (80%)</p>
+            </div>
+            <div id="results-details">
+                <h3>Revisão das Respostas</h3>
+                <div id="answers-review-container">
+                    <!-- Gabarito será inserido pelo JavaScript -->
+                </div>
+            </div>
+            <div class="results-actions">
+                <button id="redo-quiz-btn">Repetir Quiz</button>
+                <button id="back-to-topics-btn" data-target="topics-screen">Voltar aos Tópicos</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ----- Overlay de Loading ----- -->
+    <div id="loading-overlay" class="hidden">
+        <div class="spinner"></div>
+        <p id="loading-text">Carregando...</p>
+    </div>
+
+    <!-- Script principal -->
+    <script src="script.js"></script>
+</body>
+</html>

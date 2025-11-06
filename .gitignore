@@ -1,0 +1,5 @@
+# Ficheiro de segredos - NUNCA ENVIE ISTO
+.env
+
+# Pasta de dependências do Node.js
+node_modules/
