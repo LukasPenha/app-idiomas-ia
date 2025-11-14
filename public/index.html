@@ -3,143 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App de Idiomas IA</title>
+    <title>TalkPro - App de Idiomas com IA</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body>
 
-    <!-- ----- 1. Tela Inicial (Home) ----- -->
-    <section id="home-screen" class="screen active">
-        <div class="screen-content">
-            <h1>Escolha seu idioma</h1>
-            <div class="lang-selection">
-                <div class="lang-card" data-lang="en">
-                    <div class="flag">🇬🇧</div>
-                    <h2>English</h2>
-                </div>
-                <div class="lang-card" data-lang="it">
-                    <div class="flag">🇮🇹</div>
-                    <h2>Italiano</h2>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ----- 2. Tela de Tópicos ----- -->
-    <section id="topics-screen" class="screen">
-        <header class="screen-header">
-            <div class="screen-content-header">
-                <button class="back-btn" data-target="home-screen">&larr;</button>
-                <h1>Tópicos</h1>
-            </div>
-        </header>
-        <div class="screen-content">
-            <div class="custom-prompt-container">
-                <p>Ou digite o que você quer estudar:</p>
-                <input type="text" id="custom-topic-input" placeholder="Ex: 'Diferença entre Simple Past e Present Perfect'">
-                <button id="custom-topic-btn">Gerar Aula</button>
-            </div>
+<body class="no-auth"> 
+    <header id="app-header" class="hidden">
+        <div class="screen-content header-content">
+            <h1 class="logo-text desktop-nav">TalkPro</h1>
             
-            <div class="filter-controls">
-                <p>Ou escolha um tópico sugerido:</p>
-                <input type="search" id="topic-search" placeholder="Buscar tópicos...">
-            </div>
+            <nav id="app-nav" class="desktop-nav">
+                <button id="nav-home-btn" class="nav-btn">Início</button>
+                <button id="nav-history-btn" class="nav-btn">Meu Histórico</button>
+            </nav>
             
-            <div id="topic-list-container" class="topic-list">
-                <!-- Tópicos serão inseridos pelo JavaScript -->
-            </div>
-        </div>
-    </section>
-
-    <!-- ----- 3. Tela de Estudo ----- -->
-    <section id="study-screen" class="screen">
-        <header class="screen-header">
-            <div class="screen-content-header">
-                <button class="back-btn" data-target="topics-screen">&larr;</button>
-                <h1 id="study-topic-title">Nome do Tópico</h1>
-            </div>
-        </header>
-        <div class="screen-content">
-            <div id="study-content-wrapper">
-                <!-- Conteúdo da API será inserido aqui -->
-            </div>
-        </div>
-        <div class="study-cta-footer">
-            <button id="go-to-quiz-btn">Ir para as Perguntas</button>
-        </div>
-    </section>
-
-    <!-- ----- 4. Tela de Configuração do Quiz ----- -->
-    <section id="quiz-config-screen" class="screen">
-        <header class="screen-header">
-            <div class="screen-content-header">
-                <button class="back-btn" data-target="study-screen">&larr;</button>
-                <h1>Configurar Quiz</h1>
-            </div>
-        </header>
-        <div class="screen-content">
-            <div class="config-content">
-                <p>Número de Questões:</p>
-                <div class="slider-container">
-                    <input type="range" id="question-slider" min="5" max="30" value="5">
-                    <span id="question-count">5</span>
+            <div id="user-menu" class="user-menu desktop-nav">
                 </div>
-                <button id="start-quiz-btn">Iniciar Quiz</button>
-            </div>
-        </div>
-    </section>
 
-    <!-- ----- 5. Tela do Quiz ----- -->
-    <section id="quiz-screen" class="screen">
-        <div class="screen-content">
-            <div id="quiz-container">
-                <div id="quiz-header">
-                    <span id="quiz-progress">Pergunta 1 / 10</span>
-                    <button id="quit-quiz-btn" data-target="topics-screen">Sair</button>
-                </div>
-                <div id="question-container">
-                    <h2 id="question-text">Enunciado da pergunta...</h2>
-                    <div id="options-container">
-                        <!-- Opções serão inseridas pelo JavaScript -->
-                    </div>
-                </div>
-                <button id="next-question-btn">Próxima</button>
-            </div>
+            <button id="mobile-menu-btn" class="mobile-nav-btn">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
         </div>
-    </section>
+    </header>
 
-    <!-- ----- 6. Tela de Resultados ----- -->
-    <section id="results-screen" class="screen">
-        <header class="screen-header">
-            <div class="screen-content-header">
-                <h1>Resultado</h1>
-            </div>
-        </header>
-        <div class="screen-content">
-            <div id="results-summary">
-                <h2>Seu placar:</h2>
-                <p id="score-text">Acertos: 8 / 10 (80%)</p>
-            </div>
-            <div id="results-details">
-                <h3>Revisão das Respostas</h3>
-                <div id="answers-review-container">
-                    <!-- Gabarito será inserido pelo JavaScript -->
-                </div>
-            </div>
-            <div class="results-actions">
-                <button id="redo-quiz-btn">Repetir Quiz</button>
-                <button id="back-to-topics-btn" data-target="topics-screen">Voltar aos Tópicos</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- ----- Overlay de Loading ----- -->
-    <div id="loading-overlay" class="hidden">
-        <div class="spinner"></div>
-        <p id="loading-text">Carregando...</p>
+    <div id="mobile-nav-overlay" class="mobile-nav-overlay">
+        <nav id="mobile-nav-links"></nav>
+        <div id="mobile-user-menu"></div>
     </div>
 
-    <!-- Script principal -->
+
+    <main id="app-main">
+
+        <section id="login-screen" class="screen active">
+            <div class="auth-box"> 
+                <h1 class="auth-title">Bem-vindo(a)</h1>
+                <p class="auth-subtitle">Escolha como quer continuar.</p>
+
+                <div class="auth-actions-primary">
+                    <button id="primary-google-btn" class="btn btn-google">
+                        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18"><path d="M16.51 8.1H8.98v3.2h4.3c-.2 1-1.2 3.2-4.3 3.2-2.6 0-4.7-2.1-4.7-4.7s2.1-4.7 4.7-4.7c1.5 0 2.5.6 3 1.1l2.5-2.5C13.2 1.6 11.2 1 8.98 1 5.1 1 2 4.1 2 8s3.1 7 6.98 7c3.8 0 6.8-2.6 6.8-6.8 0-.5 0-1-.3-1.1Z" fill="#fff"></path></svg>
+                        <span>Entrar com Google</span>
+                    </button>
+                    <button id="guest-login-btn" class="btn btn-outline btn-full">Continuar sem conta</button>
+                </div>
+
+                <div class="divider">
+                    <span>OU ENTRE COM SEU EMAIL</span>
+                </div>
+
+                <form id="email-login-form" class="auth-form">
+                    <p class="auth-message error" id="login-message"></p>
+                    <div class="input-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" autocomplete="email" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="login-password">Senha</label>
+                        <input type="password" id="login-password" autocomplete="current-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Entrar</button>
+                </form>
+
+                <div class="auth-links-footer">
+                    <button id="go-to-register-link" class="link-btn">Não tem uma conta? Crie uma</button>
+                    
+                </div>
+            </div>
+        </section>
+
+        <section id="register-screen" class="screen">
+            <div class="auth-box">
+                <h1 class="auth-title">Criar Conta</h1>
+                <p class="auth-subtitle">Registe-se para salvar o seu progresso.</p>
+                
+                <form id="register-form" class="auth-form">
+                    <p class="auth-message error" id="register-message"></p>
+                    <div class="input-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" autocomplete="email" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="register-password">Senha (mín. 6 caracteres)</label>
+                        <input type="password" id="register-password" minlength="6" autocomplete="new-password" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="register-password-confirm">Confirmar Senha</label>
+                        <input type="password" id="register-password-confirm" minlength="6" autocomplete="new-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Criar Conta</button>
+                </form>
+
+                <div class="auth-links-footer">
+                    <button class="link-btn back-to-login-link">← Voltar para o Login</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="forgot-password-screen" class="screen">
+            <div class="auth-box">
+                <h1 class="auth-title">Recuperar Senha</h1>
+                <p class="auth-subtitle">Insira o seu email e enviaremos um link para redefinir a sua senha.</p>
+                
+                <form id="forgot-password-form" class="auth-form">
+                    <p class="auth-message" id="forgot-password-message"></p>
+                    <div class="input-group">
+                        <label for="forgot-email">Email</label>
+                        <input type="email" id="forgot-email" autocomplete="email" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Enviar Link de Recuperação</button>
+                </form>
+
+                <div class="auth-links-footer">
+                    <button class="link-btn back-to-login-link">← Voltar para o Login</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="update-password-screen" class="screen">
+            <div class="auth-box">
+                <h1 class="auth-title">Crie uma Nova Senha</h1>
+                <p class="auth-subtitle">Você está a redefinir a sua senha.</p>
+                
+                <form id="update-password-form" class="auth-form">
+                    <p class="auth-message error" id="update-password-message"></p>
+                    <div class="input-group">
+                        <label for="update-password">Nova Senha (mín. 6 caracteres)</label>
+                        <input type="password" id="update-password" minlength="6" autocomplete="new-password" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="update-password-confirm">Confirmar Nova Senha</label>
+                        <input type="password" id="update-password-confirm" minlength="6" autocomplete="new-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Salvar Nova Senha</button>
+                </form>
+            </div>
+        </section>
+        <section id="home-screen" class="screen">
+            <div class="screen-content">
+                <div class="language-selector">
+                    <h2>Escolha um idioma para começar:</h2>
+                    <div class="language-options">
+                        <div class="language-card" id="select-en" data-lang="en">
+                            <img src="https://placehold.co/100x100/E0F2FE/0C4A6E?text=EN" alt="Bandeira Inglesa" class="lang-flag">
+                            <h3>Inglês</h3>
+                        </div>
+                        <div class="language-card" id="select-it" data-lang="it">
+                            <img src="https://placehold.co/100x100/E0FBEA/065F46?text=IT" alt="Bandeira Italiana" class="lang-flag">
+                            <h3>Italiano</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="topics-screen" class="screen">
+            <div class="screen-content">
+                <h2>Tópicos de Estudo</h2>
+                
+                <div class="level-tabs">
+                    <button class="level-tab-btn active" data-level="iniciante">Iniciante</button>
+                    <button class="level-tab-btn" data-level="intermediario">Intermediário</button>
+                    <button class="level-tab-btn" data-level="avancado">Avançado</button>
+                </div>
+
+                <div class="controls-grid">
+                    <input type="search" id="topic-search" placeholder="Buscar tópicos sugeridos...">
+                    
+                    <div class="custom-topic-box">
+                        <input type="text" id="custom-topic-input" placeholder="Ou digite seu próprio tópico aqui...">
+                        <button id="custom-topic-btn" class="btn btn-secondary">Gerar Aula</button>
+                    </div>
+                </div>
+
+                <div id="topic-list-container">
+                    </div>
+            </div>
+        </section>
+
+        <section id="study-screen" class="screen">
+            <div class="screen-content">
+                <button id="back-to-topics-btn" class="btn btn-outline mb-4">← Voltar aos Tópicos</button>
+                <h2 id="study-topic-title">Carregando...</h2>
+                <div id="study-content-wrapper" class="study-content">
+                    </div>
+                <button id="start-quiz-config-btn" class="btn btn-primary btn-lg btn-sticky-footer">
+                    Pronto para o Quiz!
+                </button>
+            </div>
+        </section>
+
+        <section id="quiz-config-screen" class="screen">
+            <div class="screen-content">
+                <button id="back-to-study-btn" class="btn btn-outline mb-4">← Voltar ao Estudo</button>
+                <div class="quiz-config-box">
+                    <h2>Configurar Quiz</h2>
+                    <p>Quantas perguntas você gostaria?</p>
+                    <div class="slider-container">
+                        <input type="range" id="question-slider" min="5" max="30" value="5">
+                        <span id="question-count">5 perguntas</span>
+                    </div>
+                    <button id="start-quiz-btn" class="btn btn-primary btn-lg btn-full">Começar Quiz</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="quiz-screen" class="screen">
+            <div class="screen-content">
+                <div class="quiz-header">
+                    <span id="quiz-progress">Pergunta 1/10</span>
+                    <button id="quit-quiz-btn" class="btn btn-danger-outline">Sair</button>
+                </div>
+                <div class="quiz-question-card">
+                    <p id="question-text">Carregando pergunta...</p>
+                </div>
+                <div id="options-container" class="quiz-options">
+                    </div>
+                <button id="next-question-btn" class="btn btn-primary btn-lg btn-sticky-footer" disabled>Avançar</button>
+            </div>
+        </section>
+
+        <section id="results-screen" class="screen">
+            <div class="screen-content">
+                
+                <button id="back-to-history-btn" class="btn btn-outline mb-4 hidden">← Voltar ao Histórico</button>
+
+                <div class="results-summary">
+                    <h2>Quiz Concluído!</h2>
+                    <h3 id="score-text">Você acertou 8 de 10!</h3>
+                    <div class="results-actions">
+                        <button id="back-to-home-btn" class="btn btn-primary">Voltar ao Início</button>
+                        <button id="review-answers-btn" class="btn btn-outline">Revisar Respostas</button>
+                    </div>
+                </div>
+
+                <h3>Revisão das Respostas:</h3>
+                <div id="answers-review-container">
+                    </div>
+            </div>
+        </section>
+
+        <section id="history-screen" class="screen">
+            <div class="screen-content">
+                <h2>Meu Histórico de Quizzes</h2>
+                
+                <div class="pdf-controls mb-4">
+                    <button id="generate-review-pdf-btn" class="btn btn-primary" disabled>
+                        Gerar Guia de Revisão (PDF)
+                    </button>
+                    <span id="pdf-helper-text" class="text-muted" style="display: block; margin-top: 0.5rem; font-size: 0.9rem;">
+                        Selecione os quizzes abaixo para gerar um guia focado nos seus erros.
+                    </span>
+                </div>
+
+                <div id="history-list-container">
+                    </div>
+            </div>
+        </section>
+        
+        </main>
+
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p id="loading-text">Gerando sua aula... Isso pode levar alguns segundos.</p>
+    </div>
+
     <script src="script.js"></script>
+
 </body>
 </html>
